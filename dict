@@ -15,7 +15,7 @@ const head = {
               };
 
 
-// search for meaning function
+// fetch meaning function   (./dict def)
 function def(){
   const q = chalk.blue(`
   enter the word
@@ -38,6 +38,28 @@ function def(){
 
 
 
+//  fetch synonyms   (./dict syn)
+function syn(){
+  const q = chalk.blue(`
+  enter the word
+  
+  `);
+
+  prompt(q).then(word => {
+
+    axios({
+      method: 'get',
+      url: url + '/entries/en/' + word + '/synonyms',
+      headers: head
+
+    }).then(res => {
+      const synonmys = res.data.results[0].lexicalEntries[0].entries[0].senses[0].synonyms;
+      synonmys.forEach(nym => {console.log(chalk.yellow(nym.id));})
+    })
+    })
+}
+
+
 
 //prompt question function
 function prompt(question) {
@@ -53,12 +75,6 @@ return new Promise((resolve, error) => {
   });
 })
 }
-
-
-
-
-
-
 
 
 
@@ -100,7 +116,8 @@ switch(args[2]) {
   case 'def':
     def()
     break
-  case 'get':
+  case 'syn':
+    syn()
     break
   case 'complete':
     break
