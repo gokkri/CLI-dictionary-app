@@ -1,0 +1,23 @@
+{
+  "name": "cli-dictionary-app",
+  "version": "1.0.0",
+  "description": "takes input from command line and displays dictionary meaning for that word using wordnik API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gokkri/CLI-dictionary-app.git"
+  },
+  "author": "gokul krishna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gokkri/CLI-dictionary-app/issues"
+  },
+  "homepage": "https://github.com/gokkri/CLI-dictionary-app#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "chalk": "^2.4.1"
+  }
+}
