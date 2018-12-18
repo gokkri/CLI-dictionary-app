@@ -1,6 +1,17 @@
 #!/usr/bin/env node
 
+
+/* eslint-disable func-names */
+/* eslint-disable no-use-before-define */
+/* eslint-disable prefer-template */
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-destructuring */
+
+
 const chalk = require('chalk');
+
 const args = process.argv;
 const readline = require('readline');
 const axios = require('axios');
@@ -9,81 +20,112 @@ const axios = require('axios');
 const url = 'https://od-api.oxforddictionaries.com/api/v1';
 
 const head = {
-  "Accept": "application/json",
-  "app_id": "143bb6d3",
-  "app_key": "a82022bd200cfb7775c1e2c79e3b1f0e"
-              };
+  Accept: 'application/json',
+  app_id: '143bb6d3',
+  app_key: 'a82022bd200cfb7775c1e2c79e3b1f0e',
+};
 
 
 // fetch meaning function   (./dict def)
-function def(){
+function def() {
   const q = chalk.blue(`
-  enter the word
+  enter the word to fetch meaning
   
   `);
 
-  prompt(q).then(word => {
-
+  prompt(q).then((word) => {
     axios({
       method: 'get',
       url: url + '/entries/en/' + word,
-      headers: head
+      headers: head,
 
-    }).then(res => {
-      const meaning = res.data.results[0].lexicalEntries[0].entries[0].senses[0].definitions[0];
+    }).then((res) => {
+      meaning = res.data.results[0].lexicalEntries[0].entries[0].senses[0].definitions[0];
       console.log(chalk.yellow('meaning:' + meaning));
-    })
-    })
+    });
+  });
 }
 
 
-
-//  fetch synonyms   (./dict syn)
-function syn(){
+//  fetch synonyms  (./dict syn)
+function syn() {
   const q = chalk.blue(`
-  enter the word
-  
-  `);
+              enter the word to fetch synonyms
+              
+              `);
 
-  prompt(q).then(word => {
-
+  prompt(q).then((word) => {
     axios({
       method: 'get',
       url: url + '/entries/en/' + word + '/synonyms',
-      headers: head
+      headers: head,
 
-    }).then(res => {
-      const synonmys = res.data.results[0].lexicalEntries[0].entries[0].senses[0].synonyms;
-      synonmys.forEach(nym => {console.log(chalk.yellow(nym.id));})
-    })
-    })
-}
-
-
-
-//prompt question function
-function prompt(question) {
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-return new Promise((resolve, error) => {
-  rl.question(question, (answer) => {
-    
-    rl.close();
-    resolve(answer);
+    }).then((res) => {
+      synonmys = res.data.results[0].lexicalEntries[0].entries[0].senses[0].synonyms;
+      synonmys.forEach((nym) => { console.log(chalk.yellow(nym.id)); });
+    });
   });
-})
+}
+
+//  fetch antonyms   (./dict ant)
+function ant() {
+  const q = chalk.blue(`
+  enter the word to fetch antonyms
+    
+  `);
+
+  prompt(q).then((word) => {
+    axios({
+      method: 'get',
+      url: url + '/entries/en/' + word + '/antonyms',
+      headers: head,
+
+    }).then((res) => {
+      const antonyms = res.data.results[0].lexicalEntries[0].entries[0].senses[0].antonyms;
+      antonyms.forEach((nym) => { console.log(chalk.yellow(nym.id)); });
+    });
+  });
 }
 
 
+// fetch examples function   (./dict ex)
+function ex() {
+  const q = chalk.blue(`
+  enter the word to fetch examples
+  
+  `);
+
+  prompt(q).then((word) => {
+    axios({
+      method: 'get',
+      url: url + '/entries/en/' + word,
+      headers: head,
+
+    }).then((res) => {
+      const examples = res.data.results[0].lexicalEntries[0].entries[0].senses[0].examples;
+      examples.forEach((exe) => { console.log(chalk.yellow(exe.text)); });
+    });
+  });
+}
 
 
-
+// prompt question function
+function prompt(question) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  return new Promise((resolve, error) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer);
+    });
+  });
+}
 
 
 // help guide
-const help = function() {
+const help = function () {
   const helpText = `
   This is a dictionary app- powered by oxford API.
 
@@ -100,32 +142,32 @@ const help = function() {
     
     ./dict play:     Game displays display a definition, synonym, or antonym. 
                      You have to guess the word.
-  `
+  `;
   console.log(helpText);
-}
+};
 
 
-
-
-
-//...
-switch(args[2]) {
+// switch cases
+switch (args[2]) {
   case 'help':
-  help()
-    break
+    help();
+    break;
   case 'def':
-    def()
-    break
+    def();
+    break;
   case 'syn':
-    syn()
-    break
-  case 'complete':
-    break
+    syn();
+    break;
+  case 'ant':
+    ant();
+    break;
+  case 'ex':
+    ex();
+    break;
   default:
-  console.log(chalk.red(`
+    console.log(chalk.red(`
   INVALID COMMAND PASSED
-  `))
-    help()
- }
+  `));
+    help();
+}
 // //...
-
