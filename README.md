@@ -18,12 +18,16 @@ Takes input from command line and displays dictionary meaning for that word.
     ./dict play:     Game displays display a definition, synonym, or antonym. 
                      You have to guess the word.
 
+Dep:
 
-
-Dependencies-
 
 node's built in readline module: for reading input from CLI 
+
+
+
 axios: for making http requests
+
+
 chalk: for coloured output in CLI.
 
 
